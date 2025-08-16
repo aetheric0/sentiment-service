@@ -1,0 +1,9 @@
+fastapi==0.111.0
+uvicorn==0.30.1
+scikit-lear==1.5.1
+pandas==2.2.2
+numpy=1.26.4
+joblib==1.4.2
+datasets==2.21.0	# HuggingFace datasets
+nltk==3.9.111		# optional: preprocessing
+pytest==8.2.2		# testing
