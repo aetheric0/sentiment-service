@@ -1,10 +1,15 @@
+# -----------------------------------------
+# THIS IS A FROZEN BASELINE (DO NOT EDIT)
+# Version: v1 snapshot (2024-09-16)
+# ------------------------------------------
 import pandas as pd
 from datasets import load_dataset
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import classification_report, accuracy_score, precision_score, recall_score, f1_score
 import joblib
 import os
+import json
 
 os.makedirs("models/", exist_ok=True)
 
@@ -30,10 +35,26 @@ X_test_vec = vectorizer.transform(X_test)
 clf = LogisticRegression(max_iter=1000)
 clf.fit(X_train_vec, y_train)
 
-# Evaluate
 y_pred = clf.predict(X_test_vec)
-print("Accuracy:", accuracy_score(y_test, y_pred))
+
+# Evaluate
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print("Accuracy: ", accuracy)
 print(classification_report(y_test, y_pred))
+
+metrics = {
+    "accuracy": accuracy,
+    "precision": precision,
+    "recall": recall,
+    "f1": f1
+}
+
+with open("models/baseline_metrics.json", "w") as f:
+    json.dump(metrics, f, indent=2)
 
 # Save artifacts in projects/models
 joblib.dump(clf, "models/sentiment_model.pkl")
