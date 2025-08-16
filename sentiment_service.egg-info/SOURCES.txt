@@ -1,0 +1,11 @@
+README.md
+setup.py
+app/__init__.py
+app/main.py
+app/model.py
+sentiment_service.egg-info/PKG-INFO
+sentiment_service.egg-info/SOURCES.txt
+sentiment_service.egg-info/dependency_links.txt
+sentiment_service.egg-info/requires.txt
+sentiment_service.egg-info/top_level.txt
+tests/test_model.py
