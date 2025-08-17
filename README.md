@@ -58,7 +58,8 @@ Built with Python, scikit-learn, FastAPI, and Docker, and deployable on Google C
 	sums, invalid payloads, model loading, preprocessing behavior, basic performance.
 
 Tip: if spaCy/Click deprecation warnings are noisy, add a pytest.ini with
-```config
+
+	```config
 	[pytest]
 	filterwarnings =
 	    ignore::DeprecationWarning:typer.*
