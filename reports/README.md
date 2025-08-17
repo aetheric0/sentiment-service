@@ -1,49 +1,73 @@
+```markdown
+# 📊 Model and prediction reports
 
-## MODEL COMPARISON
-📊 Metrics Explained
-Metric	What it means	How to read it
-accuracy	% of all predictions that were correct	Higher = fewer mistakes overall
-precision	Out of all predicted positives, how many were actually positive	Higher = fewer false positives
-recall	Out of all actual positives, how many were caught	Higher = fewer false negatives
-f1	Harmonic mean of precision & recall (balances both)	Higher = good balance between precision & recall
-roc_auc	Probability the model ranks a positive higher than a negative (area under ROC curve)	Closer to 1 = better separation of classes
-brier	Mean squared error of predicted probabilities vs actual outcomes	Lower = better calibrated probabilities
+A compact summary of model performance, key metrics, plots, and how to reproduce results.
 
-🔎 Comparing Models
+---
 
-Baseline (v1_baseline)
+## 🧩 Metrics explained
 
-Accuracy: 0.88868 (~88.9%)
+| Metric   | What it means                                                   | How to read it                     |
+|----------|------------------------------------------------------------------|------------------------------------|
+| accuracy | Percent of all predictions that were correct                     | Higher = fewer mistakes overall    |
+| precision| Out of predicted positives, how many were actually positive      | Higher = fewer false positives     |
+| recall   | Out of actual positives, how many were correctly identified      | Higher = fewer false negatives     |
+| f1       | Harmonic mean of precision and recall                            | Higher = balanced precision/recall |
+| roc_auc  | Area under ROC curve (ranking separation between classes)        | Closer to 1 = better separation    |
+| brier    | Mean squared error of predicted probabilities vs. outcomes       | Lower = better calibration         |
 
-ROC AUC: 0.956 → very strong separation ability
+---
 
-Brier: 0.0886 → good calibration
+## 🥊 Model comparison
 
-Spacy + XGBoost (v2_spacy_xgb)
+| Model              | Accuracy  | ROC AUC | Brier  |
+|--------------------|-----------|---------|--------|
+| Baseline (TF–IDF + Logistic Regression) | 0.88868  | 0.956   | 0.0886 |
+| spaCy + XGBoost    | 0.88256   | 0.953   | 0.0917 |
 
-Accuracy: 0.88256 (~88.3%) → slightly worse than baseline
+> Interpretation:
+> - Baseline logistic model slightly leads across accuracy, ROC AUC, and Brier.
+> - spaCy + XGBoost is close; with tuning or more data it may catch up or surpass.
+> - Calibration (Brier) favors the baseline; expect steadier probability quality there.
 
-ROC AUC: 0.953 → very close, only a bit lower
+---
 
-Brier: 0.0917 → slightly worse probability calibration
+## 🖼️ Plots
 
+- **ROC curve:** `reports/roc.png`
+- **Reliability diagram:** `reports/reliability.png`
 
-⚖️ Interpretation
+> Tip: Reliability helps decide whether to use probability thresholds confidently (e.g., abstain below 0.6).
 
-Baseline logistic model (probably TF-IDF + Logistic Regression) is slightly better across most metrics.
+---
 
-Spacy + XGBoost didn’t beat the baseline here, though results are close.
+## 🔁 Reproduce results
 
-But, XGBoost might generalize better on larger datasets or more nuanced language if tuned.
+- **Data:** Ensure the review dataset is available locally (see project root README for setup).
+- **Notebooks:** Run `notebooks/sentiment_xgb.py` to train/evaluate the spaCy + XGB pipeline.
+- **CLI/script:** Use `benchmark.py` to generate comparison metrics (update paths if needed).
+- **Artifacts:** Serialized models live in `models/` and metrics in `models/*.json`.
 
+---
 
+## 🔎 Error analysis ideas
 
-🚀 Next Steps
+- **Confusion slices:** Inspect false positives vs. false negatives by review length and sentiment intensity.
+- **Token impact:** Check top TF–IDF features driving positive/negative predictions for the baseline.
+- **Compare misses:** Identify examples baseline gets right but XGB misses (and the reverse).
 
-Try hyperparameter tuning for XGBoost (learning rate, depth, n_estimators).
+---
 
-Consider ensembling (averaging predictions from baseline & XGB).
+## 🚀 Next steps
 
-Add error analysis → check which examples baseline got right but XGB missed (and vice versa).
+- **XGBoost tuning:** Learning rate, max depth, n_estimators, subsampling.
+- **Ensembling:** Average calibrated probabilities from baseline and XGB.
+- **Thresholding:** Choose operating points for high-precision or high-recall use cases.
+- **Calibration:** Platt scaling/Isotonic on a holdout set if deployment needs sharp probabilities.
 
-## MODEL PREDICTION
+---
+
+## 📁 Prediction artifacts
+
+- **Comparison CSV:** `reports/prediction_compare.csv` summarizes side-by-side predictions and probabilities.
+- **How to use:** Filter rows where models disagree to prioritize qualitative review and labeling.
