@@ -19,7 +19,43 @@ Built with Python, scikit-learn, FastAPI, and Docker, and deployable on Google C
 
 ## 📂 Project structure
 
-. ├── app │ ├── init.py │ ├── main.py # FastAPI app (predict endpoint, schemas) │ ├── model.py # Model load/inference helpers │ ├── schemas.py # Pydantic request/response models │ └── spacy_preprocessor.py # SpacyPreprocessor (fit/transform) ├── models/ # Serialized artifacts (vectorizer, model) ├── reports/ # Metrics, plots, and analysis ├── tests/ # API, model, preprocessing, docker tests ├── notebooks/ # Training/EDA notebooks ├── benchmark.py # CLI/Script to benchmark models (optional) ├── Dockerfile ├── requirements.txt └── README.md
+.
+├── app/
+│   ├── __init__.py
+│   ├── main.py               # FastAPI app (predict endpoint, schemas)
+│   ├── model.py              # Model load/inference helpers
+│   ├── schemas.py            # Pydantic request/response models
+│   └── spacy_preprocessor.py # SpacyPreprocessor (fit/transform)
+│
+├── models/                   # Serialized artifacts (vectorizer, model)
+├── reports/                  # Metrics, plots, and analysis
+├── tests/                    # API, model, preprocessing, docker tests
+├── notebooks/                # Training/EDA notebooks
+│
+├── benchmark.py              # CLI/Script to benchmark models (optional)
+├── Dockerfile
+├── requirements.txt
+└── README.md
+
+
+## 🧭 Architecture Overview
+
++---------------------+        +---------------------+        +---------------------+
+|  User / Client App  |  -->   |   FastAPI Endpoint  |  -->   |   ML Pipeline       |
+|  (e.g. curl, JS)    |        |   /predict          |        |   (spaCy + TFIDF +  |
+|                     |        |                     |        |    XGBoost)         |
++---------------------+        +---------------------+        +---------------------+
+        |                             |                                |
+        |                             |                                |
+        |                             v                                v
+        |                      /health, /docs                  Probabilities + Label
+        |                             |
+        v                             v
++---------------------+        +---------------------+
+|   Docker Container  |  -->   |   Cloud Run (GCP)   |
+|   (local dev)       |        |   Serverless deploy |
++---------------------+        +---------------------+
+
 
 ---
 
@@ -107,6 +143,17 @@ you need GPU/CPU variations or custom workers.
 	  -H "Content-Type: application/json" \
 	  -d '{"text":"Shipping was fast and support was helpful!"}'
 	```
+
+## 🌐 Live Demo (Cloud Run)
+
+> 🔗 [https://sentiment-service-abc123-uc.a.run.app/predict](https://sentiment-service-abc123-uc.a.run.app/predict)  
+> _(Replace with your actual Cloud Run URL once deployed)_
+
+Sample request:
+```bash
+curl -X POST https://YOUR_CLOUD_RUN_URL/predict \
+  -H "Content-Type: application/json" \
+  -d '{"text": "I love this product!"}'
 
 ## 🧠 Training and benchmarking
 - **Artifacts:** `models/` holds serialized pipelines (e.g., `tfidf_baseline.pkl`, 

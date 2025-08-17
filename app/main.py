@@ -22,7 +22,7 @@ app = FastAPI(
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    return {"status": "ok", "model_loaded": model_pipeline is not None}
 
 
 @app.post("/predict", response_model=PredictionResponse)

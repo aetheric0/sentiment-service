@@ -11,6 +11,14 @@ TEXT_CASES = [
 ]
 
 
+def test_health_check():
+    resp = client.get("/health")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["status"] == "ok"
+    assert body["model_loaded"] is True
+
+
 @pytest.mark.parametrize("text", TEXT_CASES)
 def test_predict_returns_full_probs(text):
     resp = client.post("/predict", json={"text": text})
