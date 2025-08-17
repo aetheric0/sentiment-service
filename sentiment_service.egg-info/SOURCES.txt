@@ -3,9 +3,14 @@ setup.py
 app/__init__.py
 app/main.py
 app/model.py
+app/schemas.py
+app/spacy_preprocessor.py
+notebooks/__init__.py
+notebooks/sentiment_xgb.py
 sentiment_service.egg-info/PKG-INFO
 sentiment_service.egg-info/SOURCES.txt
 sentiment_service.egg-info/dependency_links.txt
 sentiment_service.egg-info/requires.txt
 sentiment_service.egg-info/top_level.txt
+tests/__init__.py
 tests/test_model.py
