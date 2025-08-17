@@ -1,3 +1,4 @@
+fastapi[standard]
 uvicorn==0.30.1
 scikit-learn==1.5.1
 pandas==2.2.2
@@ -6,5 +7,7 @@ joblib==1.4.2
 datasets==2.21.0   # HuggingFace datasets
 nltk==3.9.1        # optional: preprocessing
 pytest==8.2.2      # testing
-spacy==3.6.1
+spacy==3.5.1
 xgboost==1.7.6
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0-py3-none-any.whl
+httpx

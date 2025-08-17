@@ -1,0 +1,7 @@
+exclude: '^\.venv/'
+repos:
+    - repo: https://github.com/pycqa/flake8
+      rev: 6.0.0
+      hooks:
+        - id: flake8
+          files: ^(app/|tests/)
